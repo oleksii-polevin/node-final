@@ -8,7 +8,7 @@ import { UsersModule } from './users/users.module';
 
 @Module({ 
   imports: [MongooseModule.forRoot(process.env.DB, {
-    // parser if they find a bug in the new parse
+    useCreateIndex: true,
     useNewUrlParser: true,
     useUnifiedTopology: true,
 }), BooksModule, UsersModule],
