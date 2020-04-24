@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body } from '@nestjs/common';
+import { Controller, Get, Post, Body, HttpException, HttpStatus } from '@nestjs/common';
 import { BooksService } from './books.service';
 import { IBook } from './books.model';
 
@@ -14,7 +14,16 @@ export class BooksController {
 
     @Post('api/books')
     async addBook(@Body() completeBody: IBook) {
-        const result = await this.booksService.addBook(completeBody);
+      let result;
+      try {
+        result = await this.booksService.addBook(completeBody);
+
+      } catch (error) {
+        throw new HttpException({
+          status: HttpStatus.INTERNAL_SERVER_ERROR,
+          error: error.message,
+      }, HttpStatus.INTERNAL_SERVER_ERROR)
+      }
         return result as string;
     }
 }

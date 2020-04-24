@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body } from '@nestjs/common';
+import { Controller, Get, Post, Body, HttpException, HttpStatus } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { IUser } from './users.model';
 
@@ -14,7 +14,15 @@ export class UsersController {
 
     @Post('api/users')
     async addBook(@Body() completeBody: IUser) {
-        const result = await this.usersService.addUser(completeBody);
+      let result: string;
+      try {
+        result = await this.usersService.addUser(completeBody);
+      } catch (error) {
+        throw new HttpException({
+          status: HttpStatus.INTERNAL_SERVER_ERROR,
+          error: error.message,
+      }, HttpStatus.INTERNAL_SERVER_ERROR)
+      }
         return result as string;
     }
 }
