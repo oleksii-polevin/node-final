@@ -4,6 +4,7 @@ export const BookSchema = new mongoose.Schema({
     blogpost: {
         type: Number,
         required: true,
+        unique: true,
     },
     title: {
         type: String,
